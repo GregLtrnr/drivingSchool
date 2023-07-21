@@ -1,0 +1,77 @@
+{% extends './layout.html' %}
+{% block head %}
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+<script>
+  //make a fetch call to '/api/appointments' and get the data
+  //then use the data to render the calendar
+  document.addEventListener('DOMContentLoaded', function() {
+    var data = fetch('/api/appointments')
+      .then(response => response.json())
+      .then(data => {
+        const fullCalendarEvents = data.appointments.map(appointment => ({
+          id: appointment.id,
+          title: `location: ${appointment.location}`,
+          start: appointment.date_start,
+          end: appointment.date_end,
+          description: `Location: ${appointment.location}`,
+          instructorId: appointment.instructor_id,
+          studentId: appointment.student_id,
+        }));
+        
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'timeGridWeek',
+          events: fullCalendarEvents,
+          eventRender: function(info) {
+            var tooltip = new Tooltip(info.el, {
+              title: info.event.extendedProps.description,
+              placement: 'top',
+              trigger: 'hover',
+              container: 'body'
+            });
+          },
+          height: '80%'
+        });
+        calendar.render();
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  });
+
+</script>
+{% endblock %}
+{% block content %}
+<div class="flex flex-col w-full h-full lg:flex-row">
+  <div class=" w-full lg:w-[70%] max-w-[1100px] mx-auto mt-12" id="calendar">
+  </div>
+  {% if account_role == 'instructor' %}
+  <div class="mx-auto mt-12">
+    <h1>Book a Lesson with a student:</h1>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="flex flex-col">
+        <label for="date_start">Date:</label>
+        <input type="datetime-local" name="date_start" step="60">
+      </div>
+      <div class="flex flex-col">
+        <label for="student">Select a student:</label>
+        <select name="student" id="student">
+          {% for student in accounts %}
+          <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <label for="location">Location:</label>
+        <input type="text" name="location" id="location">
+      </div>
+      <div class="flex flex-col mt-2">
+        <button class= "border rounded bg-white"type="submit">Validate</button>
+      </div> 
+    </form>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

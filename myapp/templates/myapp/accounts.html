@@ -1,0 +1,96 @@
+{% extends "./layout.html" %}
+
+{% block content %}
+<div class="lg:mx-[5%] mt-6">
+  {% if account_role != 'instructor' %}
+    <a href="/accounts/new" class="bg-white font-medium text-green-600 hover:underline border rounded px-4 py-2 mx-1 shadow-sm cursor-pointer">
+      Create new account
+    </a>
+  {% endif %}
+  <div class="mt-4 overflow-x-auto shadow-md sm:rounded-lg w-full">
+    <table class="w-full text-sm text-left text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+            <tr>
+              <th scope="col" class="px-6 py-3">
+                Account Type
+              </th>
+                <th scope="col" class="px-6 py-3">
+                  Username
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  email
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  First name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Last name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Date of birth
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  address
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  created at
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Number of paid hours
+                </th>
+                {% if account_role != 'instructor' %}
+                <th scope="col" class="px-6 py-3">
+                  Action
+                </th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+          {% for account in accounts %}
+            <tr class="bg-white border-b">
+              <td scope="row" class="px-6 py-4 font-medium text-gray-900">
+                {{ account.account_type }}
+            </td>
+                <th class="px-6 py-4">
+                    {{ account.username }}
+                </th>
+                <th class="px-6 py-4">
+                    {{ account.email }}
+                </th>
+                <th class="px-6 py-4">
+                    {{ account.first_name }}
+                </th>
+                <td class="px-6 py-4">
+                    {{ account.last_name }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ account.date_of_birth }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ account.address }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ account.created_at }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ account.paid_hours }}
+                </td>
+                {% if account_role != 'instructor' %}
+                <td class="px-6 py-4 flex">
+                    <a href="/accounts/edit?id={{account.id}}" class="font-medium text-blue-600 hover:underline border rounded px-4 py-2 mx-1 shadow-sm">Edit</a>
+                    <form method="DELETE" class="">
+                      <input type="hidden" value="{{ account.id }}">
+                      <button type="submit" class="font-medium text-red-600 hover:underline border rounded px-4 py-2 mx-1 shadow-sm cursor-pointer">
+                        Delete
+                      </button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

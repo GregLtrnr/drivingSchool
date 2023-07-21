@@ -1,0 +1,10 @@
+{% extends './layout.html' %}
+
+{% block content %}
+<div class="lg:mx-[10%] mt-6">
+  <h1>{{ userInformations.first_name | capfirst }} {{ userInformations.last_name | capfirst }}  - {{userInformations.account_type  | capfirst }}</h1>
+  <p>You have {{ paidLessonLeft }} lessons left</p>
+  <p>You booked {{ bookedLessons }} lessons<p>
+</div>
+{% endblock %}
+

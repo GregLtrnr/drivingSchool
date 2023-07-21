@@ -1,0 +1,117 @@
+{% extends "./layout.html" %}
+{% comment %} Account table contains : first_name, last_name, account_type (student, instructor, secretary or admin), date_of_birth, address, paid_hours  {% endcomment %}
+{% block content %}
+<div class="lg:mx-[10%] mt-6">
+    {% if account %}
+      <h1>Edit account</h1>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="flex flex-col">
+          <label for="first_name">First name</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="first_name" id="first_name" value="{{ account.first_name }}">
+        </div>
+        <div class="flex flex-col">
+          <label for="last_name">Last name</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="last_name" id="last_name" value="{{ account.last_name }}">
+        </div>
+        <div class="flex flex-col">
+          <label for="account_type">Account Type</label>
+          <select name="account_type" id="account_type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <option value="student">Student</option>
+            <option value="instructor">Instructor</option>
+            {% if account_role == 'admin' %}
+              <option value="secretary">Secretary</option>
+              <option value="admin">Admin</option>
+            {% endif %}
+          </select>
+        </div>
+        <div class="flex flex-col">
+          <label for="date_of_birth">Date of birth</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" name="date_of_birth" id="date_of_birth" value="{{ account.date_of_birth }}">
+        </div>
+        <div class="flex flex-col">
+          <label for="address">Address</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="address" id="address" value="{{ account.address }}">
+        </div>
+        <div class="flex flex-col">
+          <label for="paid_hours">Paid hours</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" min="0" name="paid_hours" id="paid_hours" value="{{ account.paid_hours }}">
+        </div>
+        <div class="flex flex-col">
+          <label for="email">email</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="email" name="email" id="email" value="{{ account.email }}">
+        </div>
+        <div class="flex flex-col">
+          <label for="password">Password</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="password" name="password" id="password">
+        </div>
+        <div class="flex flex-col">
+          <label for="confirm_password">Confirm password</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="password" name="confirm_password" id="confirm_password">
+        </div>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="hidden" name="id" value="{{account.id}}">
+        <div class="mt-4 flex flex-col">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Update Account</button>
+        </div>
+
+      </form>
+    {% else %}
+      <h1>Create account</h1>
+      <form action="" method="POST">
+        {% csrf_token %}
+      <div class="flex flex-col">
+        <label for="first_name">First name</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="first_name" id="first_name">
+      </div>
+      <div class="flex flex-col">
+        <label for="last_name">Last name</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="last_name" id="last_name">
+      </div>
+      <div class="flex flex-col">
+        <label for="account_type">Account Type</label>
+        <select name="account_type" id="account_type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="student">Student</option>
+          <option value="student">Instructor</option>
+          {% if account_role == 'admin' %}
+            <option value="secretary">Secretary</option>
+            <option value="admin">Admin</option>
+          {% endif %}
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <label for="date_of_birth">Date of birth</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" name="date_of_birth" id="date_of_birth">
+      </div>
+      <div class="flex flex-col">
+        <label for="address">Address</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="address" id="address">
+      </div>
+      <div class="flex flex-col">
+        <label for="paid_hours">Paid hours</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="paid_hours" id="paid_hours" min="0">
+      </div>
+      <div class="flex flex-col">
+        <label for="email">email</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="email" name="email" id="email">
+      </div>
+      <div class="flex flex-col">
+        <label for="password">Password</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="password" name="password" id="password">
+      </div>
+      <div class="flex flex-col">
+        <label for="confirm_password">Confirm password</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="password" name="confirm_password" id="confirm_password">
+      </div>
+      <div class="mt-4 flex flex-col">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Create Account</button>
+      </div>
+    </form>
+    {% endif %}
+    {% if error %}
+      <div class="bg-red-500 text-white p-2 rounded">
+        <p>{{ error }}</p>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+
